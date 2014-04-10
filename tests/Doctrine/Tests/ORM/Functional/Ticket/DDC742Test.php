@@ -10,16 +10,6 @@ require_once __DIR__ . '/../../../TestInit.php';
 class DDC742Test extends \Doctrine\Tests\OrmFunctionalTestCase
 {
     /**
-     * @var string
-     */
-    private $testDir;
-
-    /**
-     * @var FilesystemCache
-     */
-    private $cache;
-
-    /**
      * {@inheritDoc}
      */
     protected function setUp()
@@ -30,11 +20,8 @@ class DDC742Test extends \Doctrine\Tests\OrmFunctionalTestCase
 
         mkdir($testDir);
 
-        $this->testDir = $testDir;
-        $this->cache   = new FilesystemCache($testDir);
-
         // using a Filesystemcache to ensure that the cached data is serialized
-        $this->_em->getMetadataFactory()->setCacheDriver($this->cache);
+        $this->_em->getMetadataFactory()->setCacheDriver(new FilesystemCache($testDir));
 
         try {
             $this->_schemaTool->createSchema(array(
@@ -47,15 +34,6 @@ class DDC742Test extends \Doctrine\Tests\OrmFunctionalTestCase
         // make sure classes will be deserialized from caches
         $this->_em->getMetadataFactory()->setMetadataFor(__NAMESPACE__ . '\DDC742User', null);
         $this->_em->getMetadataFactory()->setMetadataFor(__NAMESPACE__ . '\DDC742Comment', null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function tearDown()
-    {
-        $this->cache->deleteAll();
-        rmdir($this->testDir);
     }
 
     public function testIssue()
