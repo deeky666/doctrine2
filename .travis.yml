@@ -23,7 +23,3 @@ script: phpunit --configuration tests/travis/$DB.travis.xml
 
 after_script:
   - php vendor/bin/coveralls -v
-
-matrix:
-  allow_failures:
-    - php: hhvm
